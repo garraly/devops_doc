@@ -3,7 +3,7 @@
  * @Author: lijiahua1
  * @Date: 2022-07-13 17:37:44
  * @LastEditors: lijiahua1
- * @LastEditTime: 2023-03-04 23:18:19
+ * @LastEditTime: 2023-03-05 02:21:06
  * @LastDescription: 
  */
 import 'dart:io';
@@ -64,9 +64,13 @@ class HomeScreenState extends State<HomeScreen> {
            setState(() {
               _dragging = false;
             });
-            devopsAction.generateFormExcel(detail.files.first.path);
-            devopsAction.exportToExcel();
-            // Get.toNamed('/confirm');
+            try {
+              devopsAction.generateFormExcel(detail.files.first.path);
+              Get.toNamed('/confirm');
+            } catch (e) {
+              Get.toNamed('/result', arguments: {});
+            }
+            // devopsAction.exportToExcel();
             // convertToCard(detail.files.first.path);
           },
           onDragEntered: (detail) {

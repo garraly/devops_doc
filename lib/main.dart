@@ -5,8 +5,6 @@ import 'package:macos_ui/macos_ui.dart';
 
 import 'layout/layout.dart';
 
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
 void main() {
   runApp(const MyApp());
 }
@@ -16,28 +14,21 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MacosApp(
-      title: 'Devops',
-      theme: MacosThemeData.light(),
-      darkTheme: MacosThemeData.dark(),
-      themeMode: ThemeMode.system,
-      home: Layout(
-        child: MacosApp(
-          key: navigatorKey,
+          title: 'Devops',
           theme: MacosThemeData.light(),
           darkTheme: MacosThemeData.dark(),
           themeMode: ThemeMode.system,
-          home: GetCupertinoApp(
-            routes: routes,
-            initialRoute: '/',
+          home: Layout(
+              child: GetCupertinoApp(
+              routes: routes,
+              initialRoute: '/',
+            ),
           ),
-        ),
-      ),
-    );
+        );
   }
 }
 

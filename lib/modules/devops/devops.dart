@@ -125,7 +125,6 @@ class DevopsData {
         firstCol = false;
         indexTag.add(currentIndex);
       }
-      print(currentIndex);
       int taskLength = element.tasks.length < 6 ? 6 : element.tasks.length;
       String special = element.isDevops ? "专项" : "非专项";
       sheet.merge(CellIndex.indexByString("$storyColTag${currentIndex+1}"), CellIndex.indexByString("$storyColTag${currentIndex+taskLength}"));
@@ -160,12 +159,9 @@ class DevopsData {
 
     var fileBytes = excel.save() as List<int>;
     var directory = await getDownloadsDirectory();
-    try {
-      File("$directory/敏捷故事卡片.xlsx")///保存Excel的路径
-        ..createSync(recursive: true)
-        ..writeAsBytesSync(fileBytes);
-    } catch (e) {
-      print(e.toString());
-    }
+
+    File("${directory?.path}/敏捷故事卡片.xlsx")///保存Excel的路径
+      ..createSync(recursive: true)
+      ..writeAsBytesSync(fileBytes);
   }
 }

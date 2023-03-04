@@ -3,7 +3,7 @@
  * @Author: lijiahua1
  * @Date: 2023-03-04 12:56:50
  * @LastEditors: lijiahua1
- * @LastEditTime: 2023-03-04 20:26:45
+ * @LastEditTime: 2023-03-05 02:21:43
  * @LastDescription: 
  */
 import 'package:flutter/material.dart';
@@ -28,8 +28,17 @@ class DevopsStoryConfirmScreenState extends State<DevopsStoryConfirmScreen> {
     super.initState();
   }
 
-  onPressedNex() {
-    devopsAction.exportToExcel();
+  onPressedNex() async {
+    try{ 
+      await devopsAction.exportToExcel();
+      Get.toNamed('/result', arguments: {
+        "result": "success"
+      });
+    } catch (e) {
+      Get.toNamed('/result', arguments: {
+        "result": "fail"
+      });
+    }
   }
 
   @override
