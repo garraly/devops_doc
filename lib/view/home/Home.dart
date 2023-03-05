@@ -3,7 +3,7 @@
  * @Author: lijiahua1
  * @Date: 2022-07-13 17:37:44
  * @LastEditors: lijiahua1
- * @LastEditTime: 2023-03-05 02:21:06
+ * @LastEditTime: 2023-03-05 12:34:02
  * @LastDescription: 
  */
 import 'dart:io';
@@ -85,14 +85,20 @@ class HomeScreenState extends State<HomeScreen> {
           },
           child: Container(
             decoration: BoxDecoration(
-              // borderRadius: const BorderRadius.all(Radius.circular(10)),
-              // border: Border.all(
-              //   color: Theme.of(context).secondaryHeaderColor,
-              //   style: BorderStyle.solid
-              // ),
               color: _dragging ? Colors.blueAccent.withOpacity(0.05) : Colors.transparent,
             ),
-            child: Center(child: Text( _dragging ? "松手🐿️" :"请把敏捷用户故事任务放到这^_^")),
+            child: Column(
+              children: [
+                Expanded(
+                  child: Center(child: Text( _dragging ? "松手🐿️" :"请把敏捷用户故事任务放到这^_^"))
+                ),
+                // HelpButton(
+                //   onPressed: () {
+                //     print('pressed help button');
+                //   },
+                // )
+              ],
+            ),
           ),
         )),
         )

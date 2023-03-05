@@ -3,7 +3,7 @@
  * @Author: lijiahua1
  * @Date: 2023-03-04 12:56:50
  * @LastEditors: lijiahua1
- * @LastEditTime: 2023-03-05 02:21:43
+ * @LastEditTime: 2023-03-05 12:26:58
  * @LastDescription: 
  */
 import 'package:flutter/material.dart';
@@ -56,7 +56,7 @@ class DevopsStoryConfirmScreenState extends State<DevopsStoryConfirmScreen> {
                   children: [
                     const MacosListTile(
                       title: Text('选择你的专项', style: TextStyle(fontSize: 12),),
-                      subtitle: Text('点击勾选属于专项的故事，非专项会通过人员再度区分。'),
+                      subtitle: Text('点击勾选属于专项的故事，专项与非专项会导出不同卡片。'),
                       ),
                     Expanded(
                       child: Container(
