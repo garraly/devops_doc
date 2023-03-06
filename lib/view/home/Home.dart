@@ -3,7 +3,7 @@
  * @Author: lijiahua1
  * @Date: 2022-07-13 17:37:44
  * @LastEditors: lijiahua1
- * @LastEditTime: 2023-03-05 12:34:02
+ * @LastEditTime: 2023-03-06 10:21:25
  * @LastDescription: 
  */
 import 'dart:io';
@@ -68,7 +68,10 @@ class HomeScreenState extends State<HomeScreen> {
               devopsAction.generateFormExcel(detail.files.first.path);
               Get.toNamed('/confirm');
             } catch (e) {
-              Get.toNamed('/result', arguments: {});
+              Get.toNamed('/result', arguments: {
+                "result": "fail",
+                "errMsg": "源文件格式不符合"
+              });
             }
             // devopsAction.exportToExcel();
             // convertToCard(detail.files.first.path);
