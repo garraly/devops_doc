@@ -17,7 +17,7 @@ class StoryData extends Object {
 
 class TaskData extends Object {
   String title;
-  DateTime date;
+  DateTime? date;
   String workTime;
   String person;
   TaskData(this.title,this.date,this.workTime,this.person);
@@ -26,6 +26,19 @@ class TaskData extends Object {
 
 class DevopsData {
   List<StoryData> storydata = [];
+
+  DateTime? _formatDateFromExcelCell(dynamic value) {
+    if(value is SharedString) {
+      return DateTime.parse(value.toString().substring(0,10));
+    }
+    if (value is String) {
+      return DateTime.parse(value.substring(0,10));
+    }
+    if (value is int) {
+      return DateTime.parse('1899-12-30').add(Duration(days: value));
+    }
+    return null;
+  }
 
   generateFormExcel(String filePath) {
     storydata = [];
@@ -51,32 +64,51 @@ class DevopsData {
     int acceptanceCriteriaColIndex = header.indexWhere((element) => element?.value?.toString() == '验收标准');
 
     for (var row in sheet.rows) {
-      String task = row.elementAt(taskColIndex)?.value?.toString() ?? '';
-      String story = row.elementAt(storyColIndex)?.value?.toString() ?? '';
-      String person = row.elementAt(personColIndex)?.value?.toString() ?? '';
-      DateTime date = DateTime.now();
-      String workTime = row.elementAt(workTimeColIndex)?.value?.toString() ?? '  ';
+        String task = '';
+      if (taskColIndex >= 0) { 
+        task = row.elementAt(taskColIndex)?.value?.toString() ?? '';
+      }
+      String story = '';
+      if(storyColIndex>=0) {
+        story = row.elementAt(storyColIndex)?.value?.toString() ?? '';
+      }
+      String person = '';
+      if(personColIndex>=0) {
+        person = row.elementAt(personColIndex)?.value?.toString() ?? '';
+      }
+      DateTime? date;
+      String workTime = '';
+      if(workTimeColIndex>=0) {
+        workTime = row.elementAt(workTimeColIndex)?.value?.toString() ?? '';
+      }
       DateTime? sit;
       DateTime? uat;
-      String po = row.elementAt(poColIndex)?.value?.toString() ?? "";
-      String acceptanceCriteria = row.elementAt(acceptanceCriteriaColIndex)?.value?.toString() ?? "";
+
+      String po = "";
+      if(poColIndex>=0) {
+        po = row.elementAt(poColIndex)?.value?.toString() ?? "";
+      }
+
+      String acceptanceCriteria = "";
+      if(acceptanceCriteriaColIndex>=0) {
+        acceptanceCriteria = row.elementAt(acceptanceCriteriaColIndex)?.value?.toString() ?? "";
+      }
+
       if(story.isEmpty) {
         continue;
       }
 
-      if (row.elementAt(dateColIndex)?.value != null) {
-        String dateString =  row.elementAt(dateColIndex)?.value?.toString() as String;
-        date = DateTime.parse(dateString.substring(0,10));
+      if (dateColIndex>= 0) {
+        date = _formatDateFromExcelCell(row.elementAt(dateColIndex)?.value);
+        print(date.runtimeType);
       }
 
-      if(row.elementAt(sitColIndex)?.value != null) {
-        String sitString =  row.elementAt(dateColIndex)?.value?.toString() as String;
-        sit = DateTime.parse(sitString.substring(0,10));
+      if (sitColIndex>= 0) {
+        sit = _formatDateFromExcelCell(row.elementAt(sitColIndex)?.value);
       }
 
-      if(row.elementAt(uatColIndex)?.value?.toString()!= null) {
-        String uatString =  row.elementAt(uatColIndex)?.value?.toString() as String;
-        uat= DateTime.parse(uatString.substring(0,10));
+      if (uatColIndex>= 0) {
+        uat = _formatDateFromExcelCell(row.elementAt(uatColIndex)?.value);
       }
       
       int storyIndex = storydata.indexWhere((element) => element.title == story);
@@ -140,7 +172,10 @@ class DevopsData {
       for(int taskIndex = 0; taskIndex < taskLength; taskIndex++) {
         if(taskIndex < element.tasks.length) {
           TaskData taskElement = element.tasks[taskIndex];
-          String date = "${taskElement.date.month}/${taskElement.date.day}";
+          String date =  "";
+          if (taskElement.date != null) {
+            date = "${taskElement.date!.month}/${taskElement.date!.day}";
+          }
           sheet.cell(CellIndex.indexByString("$taskColTag${currentIndex+1+taskIndex}")).value = "${taskElement.title}"'\r\n'"${date.padRight(19)}${('${taskElement.workTime}H').padRight(13)}${taskElement.person}";
           
           CellStyle taskCellStyle = sheet.cell(CellIndex.indexByString("$taskColTag${currentIndex+1+taskIndex}")).cellStyle ?? CellStyle();

@@ -5,7 +5,7 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
-PRODUCT_NAME = front_env
+PRODUCT_NAME = 敏捷开发工具
 
 // The application's bundle identifier
 PRODUCT_BUNDLE_IDENTIFIER = com.example.frontEnv
